@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宮本希翔 - 公式LINE自動化システム</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #141414;
+            --bg-card: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #06d6a0;
+            --accent-dim: rgba(6, 214, 160, 0.15);
+            --border: #2a2a2a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+        }
+
+        body {
+            font-family: 'Zen Kaku Gothic New', 'Noto Sans JP', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 60px;
+            scroll-snap-align: start;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        /* セクション1: 自己紹介 */
+        .section-intro {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #0d1a15 100%);
+        }
+
+        .intro-content {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .intro-left h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+
+        .intro-left .reading {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .intro-left .tagline {
+            font-size: 1.1rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .intro-right {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px 40px;
+            border: 1px solid var(--border);
+        }
+
+        .profile-item {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+        }
+
+        .profile-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .profile-label {
+            color: var(--text-secondary);
+            width: 100px;
+            flex-shrink: 0;
+        }
+
+        .profile-value {
+            color: var(--text-primary);
+        }
+
+        .highlight {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .connection-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            border-radius: 100px;
+            padding: 8px 20px;
+            margin-top: 24px;
+            font-size: 0.95rem;
+        }
+
+        .connection-badge::before {
+            content: "🏠";
+        }
+
+        /* セクション2: 課題 */
+        .section-problem {
+            background: var(--bg-secondary);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .section-title span {
+            color: var(--accent);
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .problem-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 28px 32px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .problem-number {
+            background: var(--accent);
+            color: var(--bg-primary);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .problem-text {
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        /* セクション3: ビフォーアフター */
+        .section-solution {
+            background: linear-gradient(180deg, var(--bg-primary) 0%, #0a1210 100%);
+        }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .solution-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 28px 32px;
+            border: 1px solid var(--border);
+        }
+
+        .solution-before {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .solution-before::before {
+            content: "×";
+            color: #ff6b6b;
+            font-weight: 700;
+        }
+
+        .solution-arrow {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .solution-after {
+            font-size: 1.15rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .solution-after::before {
+            content: "✓";
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* セクション4: 強み */
+        .section-strength {
+            background: var(--bg-secondary);
+        }
+
+        .strength-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .strength-box {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid var(--border);
+        }
+
+        .strength-box.other {
+            opacity: 0.7;
+        }
+
+        .strength-box.mine {
+            border-color: var(--accent);
+            box-shadow: 0 0 40px rgba(6, 214, 160, 0.1);
+        }
+
+        .strength-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .strength-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .strength-box.mine .strength-title {
+            color: var(--accent);
+        }
+
+        .strength-list {
+            list-style: none;
+        }
+
+        .strength-list li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+            font-size: 1.05rem;
+        }
+
+        .strength-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--text-secondary);
+        }
+
+        .strength-box.mine .strength-list li::before {
+            color: var(--accent);
+        }
+
+        .experience-badges {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .exp-badge {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* セクション5: コスト */
+        .section-cost {
+            background: var(--bg-primary);
+        }
+
+        .cost-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 48px 60px;
+            border: 1px solid var(--border);
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cost-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .cost-price {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .cost-price span {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .cost-note {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .cost-detail {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 20px 24px;
+            font-size: 1rem;
+            line-height: 1.8;
+            text-align: left;
+        }
+
+        .cost-detail strong {
+            color: var(--accent);
+        }
+
+        /* セクション6: 次のステップ */
+        .section-next {
+            background: linear-gradient(135deg, #0d1a15 0%, var(--bg-primary) 100%);
+        }
+
+        .next-content {
+            text-align: center;
+        }
+
+        .next-steps {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .next-step {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px 40px;
+            border: 1px solid var(--border);
+            min-width: 280px;
+        }
+
+        .next-step.current {
+            border-color: var(--accent);
+            box-shadow: 0 0 40px rgba(6, 214, 160, 0.15);
+        }
+
+        .step-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .step-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .next-step.current .step-title {
+            color: var(--accent);
+        }
+
+        .step-desc {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .closing-message {
+            margin-top: 48px;
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+
+        .closing-message span {
+            color: var(--accent);
+        }
+
+        /* ナビゲーションドット */
+        .nav-dots {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot:hover,
+        .nav-dot.active {
+            background: var(--accent);
+            transform: scale(1.3);
+        }
+
+        /* スクロールヒント */
+        .scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        .scroll-hint svg {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- ナビゲーションドット -->
+    <nav class="nav-dots">
+        <a href="#intro" class="nav-dot active"></a>
+        <a href="#problem" class="nav-dot"></a>
+        <a href="#solution" class="nav-dot"></a>
+        <a href="#strength" class="nav-dot"></a>
+        <a href="#cost" class="nav-dot"></a>
+        <a href="#next" class="nav-dot"></a>
+    </nav>
+
+    <!-- セクション1: 自己紹介 -->
+    <section class="section-intro" id="intro">
+        <div class="container">
+            <div class="intro-content">
+                <div class="intro-left">
+                    <h1>宮本 希翔</h1>
+                    <p class="reading">みやもと きしょう</p>
+                    <p class="tagline">LINE × システム開発</p>
+                </div>
+                <div class="intro-right">
+                    <div class="profile-item">
+                        <span class="profile-label">年齢</span>
+                        <span class="profile-value">28歳（岡山県出身）</span>
+                    </div>
+                    <div class="profile-item">
+                        <span class="profile-label">経歴</span>
+                        <span class="profile-value">
+                            SaaS開発 <span class="highlight">6年</span>（会社員）<br>
+                            公式LINE構築・サポート <span class="highlight">8年</span>
+                        </span>
+                    </div>
+                    <div class="profile-item">
+                        <span class="profile-label">実績</span>
+                        <span class="profile-value">
+                            飲食店向けシステム構築<br>
+                            ホームページ制作（SEO対策）
+                        </span>
+                    </div>
+                    <div class="connection-badge">
+                        ユージさんと同じマンションの住人です
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-hint">
+            <span>スクロール</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- セクション2: 課題 -->
+    <section class="section-problem" id="problem">
+        <div class="container">
+            <h2 class="section-title">不動産管理会社の<span>「あるある」</span>課題</h2>
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <span class="problem-number">1</span>
+                    <p class="problem-text">「水漏れ」「設備不備」などの<strong>電話対応に時間を取られる</strong></p>
+                </div>
+                <div class="problem-card">
+                    <span class="problem-number">2</span>
+                    <p class="problem-text">電話でのやり取りで<strong>「言った言わない」のトラブル</strong>が起きる</p>
+                </div>
+                <div class="problem-card">
+                    <span class="problem-number">3</span>
+                    <p class="problem-text">取扱説明書やしおりを<strong>紙で渡しており、紛失・再発行の手間</strong>がある</p>
+                </div>
+                <div class="problem-card">
+                    <span class="problem-number">4</span>
+                    <p class="problem-text">入居者情報がデータ化されておらず、<strong>効果的なアプローチができない</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- セクション3: ビフォーアフター -->
+    <section class="section-solution" id="solution">
+        <div class="container">
+            <h2 class="section-title"><span>LINE</span>でこう変わる</h2>
+            <div class="solution-grid">
+                <div class="solution-card">
+                    <p class="solution-before">電話対応に追われる</p>
+                    <p class="solution-arrow">↓</p>
+                    <p class="solution-after">写真・動画付き報告、履歴が残る</p>
+                </div>
+                <div class="solution-card">
+                    <p class="solution-before">紙の取説が紛失される</p>
+                    <p class="solution-arrow">↓</p>
+                    <p class="solution-after">スマホでいつでもPDF閲覧</p>
+                </div>
+                <div class="solution-card">
+                    <p class="solution-before">顧客情報がバラバラ</p>
+                    <p class="solution-arrow">↓</p>
+                    <p class="solution-after">LINE登録時に自動収集・DB化</p>
+                </div>
+                <div class="solution-card">
+                    <p class="solution-before">一斉連絡しかできない</p>
+                    <p class="solution-arrow">↓</p>
+                    <p class="solution-after">誕生日祝い、更新お知らせ等を個別配信</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- セクション4: 強み -->
+    <section class="section-strength" id="strength">
+        <div class="container">
+            <h2 class="section-title">他社との<span>違い</span></h2>
+            <div class="strength-content">
+                <div class="strength-box other">
+                    <p class="strength-label">一般的なLINE構築業者</p>
+                    <p class="strength-title">公式LINEの標準機能で対応</p>
+                    <ul class="strength-list">
+                        <li>既存のテンプレートを使用</li>
+                        <li>カスタマイズに限界がある</li>
+                        <li>痒いところに手が届かない</li>
+                    </ul>
+                </div>
+                <div class="strength-box mine">
+                    <p class="strength-label">私の場合</p>
+                    <p class="strength-title">公式LINE × 独自システム開発</p>
+                    <ul class="strength-list">
+                        <li>御社専用のカスタマイズが可能</li>
+                        <li>独自APIで機能を自由に拡張</li>
+                        <li>「こうしたい」を形にできる</li>
+                    </ul>
+                    <div class="experience-badges">
+                        <span class="exp-badge">LINE構築 8年</span>
+                        <span class="exp-badge">SaaS開発 6年</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- セクション5: コスト -->
+    <section class="section-cost" id="cost">
+        <div class="container">
+            <h2 class="section-title">ランニングコストの<span>目安</span></h2>
+            <div class="cost-card">
+                <p class="cost-label">システム・データベース用サーバー</p>
+                <p class="cost-price">約3,000円<span>/月〜</span></p>
+                <p class="cost-note">※利用者数により変動します</p>
+                <div class="cost-detail">
+                    <strong>ご注意：</strong>これは私への支払いとは別で、システムとデータベースを動かすために<strong>最低限必要なサーバー費用</strong>です。<br>
+                    開発費用は、御社のご要望をお聞きした上でお見積もりします。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- セクション6: 次のステップ -->
+    <section class="section-next" id="next">
+        <div class="container">
+            <div class="next-content">
+                <h2 class="section-title">今後の<span>進め方</span></h2>
+                <div class="next-steps">
+                    <div class="next-step current">
+                        <p class="step-label">本日</p>
+                        <p class="step-title">課題・ご要望をお聞かせください</p>
+                        <p class="step-desc">まずはお話を聞かせてください</p>
+                    </div>
+                    <div class="next-step">
+                        <p class="step-label">次回</p>
+                        <p class="step-title">具体的なご提案とお見積もり</p>
+                        <p class="step-desc">本日の内容をもとに作成します</p>
+                    </div>
+                </div>
+                <p class="closing-message">
+                    <span>御社の課題</span>、ぜひ聞かせてください。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // ナビゲーションドットのアクティブ状態を更新
+        const sections = document.querySelectorAll('section');
+        const navDots = document.querySelectorAll('.nav-dot');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navDots.forEach(dot => {
+                        dot.classList.remove('active');
+                        if (dot.getAttribute('href') === `#${id}`) {
+                            dot.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+</body>
+</html>
